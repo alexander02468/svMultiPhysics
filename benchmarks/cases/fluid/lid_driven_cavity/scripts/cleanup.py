@@ -20,3 +20,6 @@ for fp in Path('./').glob("**/*.png"):
 
 for fp in Path('./').glob("**/*.xml"):
     fp.unlink()
+
+for fp in Path('./').glob("**/*.json"):
+    fp.unlink()
