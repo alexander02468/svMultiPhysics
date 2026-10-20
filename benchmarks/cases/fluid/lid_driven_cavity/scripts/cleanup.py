@@ -1,5 +1,5 @@
 """
-Cleanup the directory by removing all *.vtu, *.vtp, and *.csv files
+Cleanup the directory by removing all temporary or created files.
 
 """
 
@@ -13,4 +13,10 @@ for fp in Path('./').glob("**/*.vtp"):
     fp.unlink()
 
 for fp in Path('./').glob("**/*.csv"):
+    fp.unlink()
+
+for fp in Path('./').glob("**/*.png"):
+    fp.unlink()
+
+for fp in Path('./').glob("**/*.xml"):
     fp.unlink()
