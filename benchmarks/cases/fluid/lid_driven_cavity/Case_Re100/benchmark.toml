@@ -1,0 +1,41 @@
+# This Benchmark was adapted to svBenchmark from original by Sujal Dave
+# Reference benchmark can be found at https://github.com/sujaldave/2DLidDrivenCavityBenchmark
+
+schema = 1
+name = "Lid-Driven Cavity - Re 100"
+reference_source = """ \
+U. Ghia, K. N. Ghia, and C. T. Shin, “High-Re solutions for incompressible flow using the Navier–Stokes equations and a \
+multigrid method,” *Journal of Computational Physics* 48 (1982), 387–411. <https://doi.org/10.1016/0021-9991(82)90058-4>
+"""
+
+[preprocess.generate_cases]
+    argv = ["python", "../scripts/generate_cases.py", "--re", "100", "--output", "./"]
+
+[solver.Re100]
+    input = "solver.xml"
+    mpirank = 4
+    cwd = "./Re100"
+
+[postprocess.validate_results]
+    argv = ["python", "../scripts/validate_results.py", "--re", "100", "--cases-root", "./", "--output", "./"]
+
+
+# Evaluations, these are lifted directly from Sujal end validation/metrics.csv
+# Sujal's scripts already calculate the exact relative error --> hence atol is used here (but the error is relative)
+[evaluation.u_relative_l2]
+    argv = ["python", "../scripts/extract_metric.py", "metrics.csv", "100", "u_relative_l2"]
+    reference = 0.0
+    atol = 0.015
+
+[evaluation.v_relative_l2]
+    argv = ["python", "../scripts/extract_metric.py", "metrics.csv", "100", "v_relative_l2"]
+    reference = 0.0
+    atol = 0.030
+
+[evaluation.primary_vortex_distance]
+    argv = ["python", "../scripts/extract_metric.py", "metrics.csv", "100", "primary_vortex_distance"]
+    reference = 0.0
+    atol = 0.020
+
+[cleanup.run]
+    argv = ["python", "../scripts/cleanup.py"]
